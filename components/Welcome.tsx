@@ -4,7 +4,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-
 gsap.registerPlugin(useGSAP);
 
 const FONT_WEIGHTS = {
@@ -37,36 +36,45 @@ const setupTextHover = (container, type) => {
     });
   };
 
-  const handleMouseMove=(e)=>{
-    const {left}=container.getBoundingClientRect();
-    const mouseX=e.clientX-left;
+  const handleMouseMove = (e) => {
+    const { left } = container.getBoundingClientRect();
+    const mouseX = e.clientX - left;
 
-    letters.forEach((letter)=>{
-        const {left:l,width:w}=letter.getBoundingClientRect();
-        const distance=Math.abs(mouseX-(l-left+w/2));
-        const intensity=Math.exp(-(distance ** 2)/2000);
+    letters.forEach((letter) => {
+      const { left: l, width: w } = letter.getBoundingClientRect();
+      const distance = Math.abs(mouseX - (l - left + w / 2));
+      const intensity = Math.exp(-(distance ** 2) / 20000);
 
-        animateLetter(letter,min+(max-min)*intensity)
-    })
-    
+      animateLetter(letter, min + (max - min) * intensity);
+    });
   };
-  container.addEventListener("mousemove",handleMouseMove)
+
+  const handleMouseLeave=()=>letters.forEach((letter)=>animateLetter(letter,base,0.3))
+  container.addEventListener("mousemove", handleMouseMove);
+  container.addEventListener("mouseleave",handleMouseLeave)
+
+  return () => {
+    container.removeEventListener("mousemove", handleMouseMove);
+  };
 };
 
 const Welcome = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
 
+  useGSAP(() => {
+    setupTextHover(titleRef.current, "title");
+    setupTextHover(subtitleRef.current, "subtitle");
 
-  useGSAP(()=>{
-    setupTextHover(titleRef.current,"title");
-    setupTextHover(subtitleRef.current,"subtitle")
-  },[]);
+    const titleCleanup = setupTextHover(titleRef.current, "title");
+    const subtitleCleanup = setupTextHover(subtitleRef.current, "subtitle");
 
-  return()=>{
-    subtitleCleanup();
-    titleCleanup();
-  }
+    return () => {
+      titleCleanup && titleCleanup();
+      subtitleCleanup && subtitleCleanup();
+    };
+  }, []);
+
   return (
     <section id="welcome">
       <p ref={subtitleRef}>
@@ -77,7 +85,7 @@ const Welcome = () => {
         )}
       </p>
       <h1 ref={titleRef} className="mt-7">
-        {renderText("portfolio", "text-9xl italic font-georama",100)}
+        {renderText("portfolio", "text-9xl italic font-georama", 100)}
       </h1>
 
       <div className="small-screen">
