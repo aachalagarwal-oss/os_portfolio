@@ -93,7 +93,7 @@ const Welcome = () => {
         {renderText(
           "portfolio",
           "text-9xl italic font-georama",
-          FONT_WEIGHTS.title.default
+          FONT_WEIGHTS.title.default,
         )}
       </h1>
 
@@ -105,4 +105,3 @@ const Welcome = () => {
 };
 
 export default Welcome;
-
