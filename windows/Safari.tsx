@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
 import WindowControls from "@/components/WindowControls";
 import WindowWrapper from "../hoc/WindowWrapper";
 import {
   ChevronLeft,
   ChevronRight,
   Copy,
+  MoveRight,
   PanelLeft,
   Plus,
   Search,
@@ -47,7 +47,7 @@ const Safari = () => {
         </div>
       </div>
 
-      <div className="Blog">
+      <div className="blog">
         <h2>My Developer Blog</h2>
 
         <div className="space-y-8">
@@ -56,6 +56,13 @@ const Safari = () => {
               <div className="col-span-2">
                   <img src={image} alt={title} />
                 </div>
+                <div className="content">
+                  <p>{date}</p>
+                  <h3>{title}</h3>
+                  <a href={link} target="_blank" rel="noopener noreferrer">
+                    Check out the full post<MoveRight className="icon-hover"/>
+                  </a>
+                  </div>
             </div>
           ))}
         </div>

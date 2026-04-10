@@ -1,8 +1,13 @@
+"use client"
+
 import { navIcons, navLinks } from "#constants/index";
+import usewindowstore from "@/store/window";
 import dayjs from "dayjs";
 
 
 const Navbar = () => {
+
+  const {openWindow}=usewindowstore();
   return (
     <>
       <nav>
@@ -11,8 +16,8 @@ const Navbar = () => {
           <p className="font-bold">Aachal's Portfolio</p>
 
           <ul>
-            {navLinks.map(({ id, name }) => (
-              <li key={id}>
+            {navLinks.map(({ id, name,type }) => (
+              <li key={id} onClick={()=>openWindow(type)} className="cursor-pointer hover:underline">
                 <p>{name}</p>
               </li>
             ))}
